@@ -6,6 +6,26 @@
 #include <iomanip>
 #include <cmath>
 
+// Function to trim whitespace and quotes from a string
+std::string trim(const std::string& str) {
+    auto start = str.begin();
+    while (start != str.end() && std::isspace(*start)) {
+        start++;
+    }
+
+    auto end = str.end();
+    do {
+        end--;
+    } while (std::distance(start, end) > 0 && std::isspace(*end));
+
+    if (*start == '\"' && *end == '\"') {
+        start++;
+        end--;
+    }
+
+    return std::string(start, end + 1);
+}
+
 void DataAnalysis::loadDataFromCSV(const std::string& filename) {
     std::ifstream file(filename);
     std::cout << filename << "\n";
@@ -24,7 +44,6 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
     std::ofstream logData("log_data_" + getCurrentDateTime() + ".txt");
     std::ofstream logError("log_error_" + getCurrentDateTime() + ".txt");
 
-
     while (std::getline(file, line)) {
         if (line.empty() || line[0] == '#') continue; // Pomijamy puste i komentarze
 
@@ -32,66 +51,127 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
 
         std::string timestamp, auto_consumption_str, power_export_str, power_import_str, power_consumption_str, power_production_str;
         double auto_consumption = 0, power_export = 0, power_import = 0, power_consumption = 0, power_production = 0;
+        try
+        {
+            std::getline(stream, timestamp, ',');
+            std::getline(stream, auto_consumption_str, ',');
+            std::getline(stream, power_export_str, ',');
+            std::getline(stream, power_import_str, ',');
+            std::getline(stream, power_consumption_str, ',');
+            std::getline(stream, power_production_str);
+        }
+        catch (const std::invalid_argument& e) {
+                std::cerr << "To short: " << e.what() << "\n";
+                logError << line << std::endl;
+                incorrectRecords++;
+                continue;
+        }
+        catch (...) {
+            std::cerr << "Cos sie zjebalo: " << "\n";
+            logError << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
 
-        std::getline(stream, timestamp, ',');
-        std::getline(stream, auto_consumption_str, ',');
-        std::getline(stream, power_export_str, ',');
-        std::getline(stream, power_import_str, ',');
-        std::getline(stream, power_consumption_str, ',');
-        std::getline(stream, power_production_str);
+        if (timestamp == "")
+        {
+            std::cout << "empty" << std::endl;
+            logError << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
 
-        std::cout << "Timestamp: " << timestamp << "\n";
-        std::cout << "Auto Consumption: " << auto_consumption_str << "\n";
-        std::cout << "Power Export: " << power_export_str << "\n";
-        std::cout << "Power Import: " << power_import_str << "\n";
-        std::cout << "Power Consumption: " << power_consumption_str << "\n";
-        std::cout << "Power Production: " << power_production_str << "\n";
-        std::cout << "----------------------------------------" <<"\n";
+        if (auto_consumption_str == "")
+        {
+            std::cout << "empty" << std::endl;
+            logError << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
+
+        if (power_export_str == "")
+        {
+            std::cout << "empty" << std::endl;
+            logError << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
+
+        if (power_import_str == "")
+        {
+            std::cout << "empty" << std::endl;
+            logError << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
+
+        if (power_consumption_str == "")
+        {
+            std::cout << "empty" << std::endl;
+            logError << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
         
+        if (power_production_str == "")
+        {
+            std::cout << "empty" << std::endl;
+            logError << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
+
         // Konwersja stringów na liczby
         try {
+
+            // Trim strings before conversion
+            auto_consumption_str = trim(auto_consumption_str);
+            power_export_str = trim(power_export_str);
+            power_import_str = trim(power_import_str);
+            power_consumption_str = trim(power_consumption_str);
+            power_production_str = trim(power_production_str);
+    
             auto_consumption = std::stod(auto_consumption_str);
             power_export = std::stod(power_export_str);
             power_import = std::stod(power_import_str);
             power_consumption = std::stod(power_consumption_str);
             power_production = std::stod(power_production_str);
-        } catch (const std::invalid_argument& e) {
-            std::cerr << "Błąd konwersji wartości w linii: " << line << "\n";
-            logError << "Błąd konwersji: " << line << std::endl;
-            incorrectRecords++;
-            continue;  // Pomijamy ten rekord
         }
-
-        std::cout << "Timestamp: " << timestamp << std::endl;
-        std::cout << "Auto Consumption: " << auto_consumption << std::endl;
-        // std::cout << "Power Export: " << power_export << std::endl;
-        // std::cout << "Power Import: " << power_import << std::endl;
-        // std::cout << "Power Consumption: " << power_consumption << std::endl;
-        // std::cout << "Power Production: " << power_production << std::endl;
-        // std::cout << "----------------------------------------" << std::endl;
-        
-
-        
-
-        // stream >> timestamp >> auto_consumption >> power_export >> power_import >> power_consumption >> power_production;
-        
-
+        catch (const std::invalid_argument& e) {
+            std::cerr << "Invalid argument: " << e.what() << "\n";
+            logError << "Invalid argument: " << e.what() << " in line: " << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
+        catch (const std::out_of_range& e) {
+            std::cerr << "Out of range: " << e.what() << "\n";
+            logError << "Out of range: " << e.what() << " in line: " << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
+        catch (...) {
+            std::cerr << "Unknown error occurred\n";
+            logError << "Unknown error in line: " << line << std::endl;
+            incorrectRecords++;
+            continue;
+        }
         
         // Utwórz rekord
         Record* record = new Record(timestamp, auto_consumption, power_export, power_import, power_consumption, power_production);
-        record->show();
-       
+        // record->show();
+
         if (record->isValid()) {
             // Jeżeli rekord jest poprawny, dodajemy go do drzewa
             addRecordToTree(record);
             logData << line << std::endl;  // Zapisujemy poprawny rekord do logu
             correctRecords++;
-        } else {
+        }
+        else {
             // Jeżeli rekord jest niepoprawny, zapisujemy go do logu błędów
             logError << line << std::endl;
             incorrectRecords++;
         }
-        
+
         // Parsowanie daty
         std::tm tm = record->timestamp;
         int year = tm.tm_year + 1900;
@@ -108,7 +188,7 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
         }
         data[year][month][day][quarter]->addRecord(record);
     }
-    
+
     file.close();
     logData.close();
     logError.close();
