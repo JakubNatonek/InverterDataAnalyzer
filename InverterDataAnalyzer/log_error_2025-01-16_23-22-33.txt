@@ -1,0 +1,3 @@
+Invalid argument: invalid stod argument in line: Time,Autokonsumpcja (W),Eksport (W),Import (W),Pobór (W),Produkcja (W)
+07.10.2021 17:30,"xxxx","xxxx","yyyy","yyyy"
+15.10.2021 11:00,"363.4795","0","363.4795","4473"
