@@ -5,7 +5,13 @@
 #include <iostream>
 #include "TreeNode.h"
 
-
+void TreeNode::show() {
+    std::cout << "Year: " << year << ", Month: " << month << ", Day: " << day << ", Quarter: " << quarter << std::endl;
+    std::cout << "Records:" << std::endl;
+    for (const auto& record : records) {
+        std::cout << " - " << record->toString() << std::endl;
+    }
+}
 
 /**
  * @brief Konstruktor klasy TreeNode.
@@ -20,7 +26,7 @@ TreeNode::TreeNode(int year, int month, int day, int quarter) {
     this->month = month;
     this->day = day;
     this->quarter = quarter;
-
+    show();
 }
 
 

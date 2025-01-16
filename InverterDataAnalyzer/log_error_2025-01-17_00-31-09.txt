@@ -1,6 +1,0 @@
-Pusty wiersz in line: 
-Invalid argument: invalid stod argument in line: Time,Autokonsumpcja (W),Eksport (W),Import (W),Pobór (W),Produkcja (W)
-Puste pole in line: 07.10.2021 17:30,"xxxx","xxxx","yyyy","yyyy"
-Pusty wiersz in line: 
-Puste pole in line: 15.10.2021 11:00,"363.4795","0","363.4795","4473"
-Pusty wiersz in line: 

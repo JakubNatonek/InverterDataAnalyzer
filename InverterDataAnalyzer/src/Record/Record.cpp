@@ -35,6 +35,7 @@ Record::Record(const std::string& timestamp, double auto_consumption, double pow
     this->power_import = power_import;
     this->power_consumption = power_consumption;
     this->power_production = power_production;
+    show();
 }
 
 /**

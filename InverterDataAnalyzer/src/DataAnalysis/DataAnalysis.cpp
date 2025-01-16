@@ -987,19 +987,22 @@ void DataAnalysis::saveToBinaryFile(std::string& fileName) {
  */
 void DataAnalysis::loadFromBinaryFile(std::string& fileName) {
     std::ifstream inFile(fileName, std::ios::binary);
-    
+
     if (!inFile) {
         std::cerr << "Błąd otwarcia pliku do odczytu.\n";
         return;
     }
 
     // Ładujemy dane z pliku binarnego
-    Record record;
-    while (inFile.read(reinterpret_cast<char*>(&record), sizeof(Record))) {
+    while (true) {
+        Record* record = new Record();
+        if (!inFile.read(reinterpret_cast<char*>(record), sizeof(Record))) {
+            delete record;
+            break;
+        }
         // Przechowujemy dane w odpowiednich strukturach
-        // W zależności od struktury danych, musimy umieścić rekordy w odpowiednich węzłach drzewa
-        // Na przykład: dodajemy rekord do odpowiedniego węzła w drzewie:
-        addRecordToTree(&record);
+        addRecordToTree(record);
+        record->show();
     }
 
     inFile.close();
