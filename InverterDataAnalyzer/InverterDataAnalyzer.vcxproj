@@ -155,6 +155,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="InverterDataAnalyzer.cpp" />
+    <ClCompile Include="src\DataAnalysis\DataAnalysis.cpp" />
     <ClCompile Include="src\Record\Record.cpp">
       <RuntimeLibrary>MultiThreadedDebugDll</RuntimeLibrary>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -305,6 +306,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DataAnalysis\DataAnalysis.h" />
     <ClInclude Include="src\Record\Record.h" />
     <ClInclude Include="src\TreeNode\TreeNode.h" />
   </ItemGroup>

@@ -4,14 +4,17 @@
 #include <ctime>
 
 class Record {
-    private:
+    public:
         std::tm timestamp;  // Data i godzina pomiaru
         double auto_consumption;
         double power_export;
         double power_import;
         double power_consumption;
         double power_production;
-    public:
+
+        Record();
         Record(const std::string& timestamp, double auto_consumption, double power_export, double power_import, double power_consumption, double power_production);
-        
+        void show();
+        bool isValid() const;
+        std::string toString() const;
 };
