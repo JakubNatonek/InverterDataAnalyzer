@@ -26,6 +26,12 @@ std::string trim(const std::string& str) {
     return std::string(start, end + 1);
 }
 
+// Funkcja pomocnicza do logowania błędów
+void logErrorRecord(const std::string& line, const std::string& errorMessage, std::ofstream& logError) {
+    std::cerr << errorMessage << "\n";
+    logError << errorMessage << " in line: " << line << std::endl;
+}
+
 void DataAnalysis::loadDataFromCSV(const std::string& filename) {
     std::ifstream file(filename);
     std::cout << filename << "\n";
@@ -45,14 +51,19 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
     std::ofstream logError("log_error_" + getCurrentDateTime() + ".txt");
 
     while (std::getline(file, line)) {
-        if (line.empty() || line[0] == '#') continue; // Pomijamy puste i komentarze
+        if (line.empty()) {
+            logErrorRecord(line, "Pusty wiersz", logError);
+            incorrectRecords++;
+            continue;
+        }
+
+        if (line[0] == '#') continue; // Pomijamy komentarze
 
         std::istringstream stream(line);
 
         std::string timestamp, auto_consumption_str, power_export_str, power_import_str, power_consumption_str, power_production_str;
         double auto_consumption = 0, power_export = 0, power_import = 0, power_consumption = 0, power_production = 0;
-        try
-        {
+        try {
             std::getline(stream, timestamp, ',');
             std::getline(stream, auto_consumption_str, ',');
             std::getline(stream, power_export_str, ',');
@@ -61,76 +72,31 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
             std::getline(stream, power_production_str);
         }
         catch (const std::invalid_argument& e) {
-                std::cerr << "To short: " << e.what() << "\n";
-                logError << line << std::endl;
-                incorrectRecords++;
-                continue;
+            logErrorRecord(line, "To short: " + std::string(e.what()), logError);
+            incorrectRecords++;
+            continue;
         }
         catch (...) {
-            std::cerr << "Cos sie zjebalo: " << "\n";
-            logError << line << std::endl;
+            logErrorRecord(line, "Cos poszlo nie tak", logError);
             incorrectRecords++;
             continue;
         }
 
-        if (timestamp == "")
-        {
-            std::cout << "empty" << std::endl;
-            logError << line << std::endl;
-            incorrectRecords++;
-            continue;
-        }
-
-        if (auto_consumption_str == "")
-        {
-            std::cout << "empty" << std::endl;
-            logError << line << std::endl;
-            incorrectRecords++;
-            continue;
-        }
-
-        if (power_export_str == "")
-        {
-            std::cout << "empty" << std::endl;
-            logError << line << std::endl;
-            incorrectRecords++;
-            continue;
-        }
-
-        if (power_import_str == "")
-        {
-            std::cout << "empty" << std::endl;
-            logError << line << std::endl;
-            incorrectRecords++;
-            continue;
-        }
-
-        if (power_consumption_str == "")
-        {
-            std::cout << "empty" << std::endl;
-            logError << line << std::endl;
-            incorrectRecords++;
-            continue;
-        }
-        
-        if (power_production_str == "")
-        {
-            std::cout << "empty" << std::endl;
-            logError << line << std::endl;
+        if (timestamp.empty() || auto_consumption_str.empty() || power_export_str.empty() || power_import_str.empty() || power_consumption_str.empty() || power_production_str.empty()) {
+            logErrorRecord(line, "Puste pole", logError);
             incorrectRecords++;
             continue;
         }
 
         // Konwersja stringów na liczby
         try {
-
             // Trim strings before conversion
             auto_consumption_str = trim(auto_consumption_str);
             power_export_str = trim(power_export_str);
             power_import_str = trim(power_import_str);
             power_consumption_str = trim(power_consumption_str);
             power_production_str = trim(power_production_str);
-    
+
             auto_consumption = std::stod(auto_consumption_str);
             power_export = std::stod(power_export_str);
             power_import = std::stod(power_import_str);
@@ -138,27 +104,23 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
             power_production = std::stod(power_production_str);
         }
         catch (const std::invalid_argument& e) {
-            std::cerr << "Invalid argument: " << e.what() << "\n";
-            logError << "Invalid argument: " << e.what() << " in line: " << line << std::endl;
+            logErrorRecord(line, "Invalid argument: " + std::string(e.what()), logError);
             incorrectRecords++;
             continue;
         }
         catch (const std::out_of_range& e) {
-            std::cerr << "Out of range: " << e.what() << "\n";
-            logError << "Out of range: " << e.what() << " in line: " << line << std::endl;
+            logErrorRecord(line, "Out of range: " + std::string(e.what()), logError);
             incorrectRecords++;
             continue;
         }
         catch (...) {
-            std::cerr << "Unknown error occurred\n";
-            logError << "Unknown error in line: " << line << std::endl;
+            logErrorRecord(line, "Unknown error occurred", logError);
             incorrectRecords++;
             continue;
         }
-        
+
         // Utwórz rekord
         Record* record = new Record(timestamp, auto_consumption, power_export, power_import, power_consumption, power_production);
-        // record->show();
 
         if (record->isValid()) {
             // Jeżeli rekord jest poprawny, dodajemy go do drzewa
@@ -168,7 +130,7 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
         }
         else {
             // Jeżeli rekord jest niepoprawny, zapisujemy go do logu błędów
-            logError << line << std::endl;
+            logErrorRecord(line, "Niepoprawny rekord", logError);
             incorrectRecords++;
         }
 
