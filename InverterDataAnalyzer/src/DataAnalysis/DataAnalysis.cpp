@@ -95,14 +95,6 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
             continue;
         }
 
-        std::cout << "Timestamp: " << timestamp << std::endl;
-        std::cout << "Auto Consumption: " << auto_consumption << std::endl;
-        // std::cout << "Power Export: " << power_export << std::endl;
-        // std::cout << "Power Import: " << power_import << std::endl;
-        // std::cout << "Power Consumption: " << power_consumption << std::endl;
-        // std::cout << "Power Production: " << power_production << std::endl;
-        // std::cout << "----------------------------------------" << std::endl;
-
         // Utwórz rekord
         Record* record = new Record(timestamp, auto_consumption, power_export, power_import, power_consumption, power_production);
         record->show();
