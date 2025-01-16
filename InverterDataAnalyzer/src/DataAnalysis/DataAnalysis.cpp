@@ -6,7 +6,12 @@
 #include <iomanip>
 #include <cmath>
 
-// Function to trim whitespace and quotes from a string
+/**
+ * @brief Funkcja do przycinania białych znaków i cudzysłowów z ciągu znaków.
+ *
+ * @param str Ciąg znaków do przycięcia.
+ * @return std::string Przycięty ciąg znaków.
+ */
 std::string trim(const std::string& str) {
     auto start = str.begin();
     while (start != str.end() && std::isspace(*start)) {
@@ -26,12 +31,23 @@ std::string trim(const std::string& str) {
     return std::string(start, end + 1);
 }
 
-// Funkcja pomocnicza do logowania błędów
+/**
+ * @brief Funkcja pomocnicza do logowania błędów.
+ *
+ * @param line Linia, w której wystąpił błąd.
+ * @param errorMessage Wiadomość błędu.
+ * @param logError Strumień do pliku logu błędów.
+ */
 void logErrorRecord(const std::string& line, const std::string& errorMessage, std::ofstream& logError) {
     std::cerr << errorMessage << "\n";
     logError << errorMessage << " in line: " << line << std::endl;
 }
 
+/**
+ * @brief Wczytuje dane z pliku CSV.
+ *
+ * @param filename Nazwa pliku CSV.
+ */
 void DataAnalysis::loadDataFromCSV(const std::string& filename) {
     std::ifstream file(filename);
     std::cout << filename << "\n";
@@ -156,9 +172,19 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
     logError.close();
 }
 
-//======================================================================================================================
-
-// Metody sumujące
+/**
+ * @brief Sumuje autokonsumpcję w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Suma autokonsumpcji.
+ */
 double DataAnalysis::sumAutokonsumpcja(int startYear, int startMonth, int startDay, int startQuarter,
                                       int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
@@ -182,7 +208,19 @@ double DataAnalysis::sumAutokonsumpcja(int startYear, int startMonth, int startD
     return total; 
 }
 
-// Metody sumujące dla innych parametrów (eksport, import, pobór, produkcja) można zaimplementować podobnie:
+/**
+ * @brief Sumuje eksport w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Suma eksportu.
+ */
 double DataAnalysis::sumEksport(int startYear, int startMonth, int startDay, int startQuarter,
                                int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
@@ -206,7 +244,19 @@ double DataAnalysis::sumEksport(int startYear, int startMonth, int startDay, int
     
     return total; 
 }
-
+/**
+ * @brief Sumuje import w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Suma importu.
+ */
 double DataAnalysis::sumImport(int startYear, int startMonth, int startDay, int startQuarter,
                               int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
@@ -231,6 +281,19 @@ double DataAnalysis::sumImport(int startYear, int startMonth, int startDay, int 
     return total; 
 }
 
+/**
+ * @brief Sumuje pobór w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Suma poboru.
+ */
 double DataAnalysis::sumPobor(int startYear, int startMonth, int startDay, int startQuarter, int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
 
@@ -253,7 +316,19 @@ double DataAnalysis::sumPobor(int startYear, int startMonth, int startDay, int s
     
     return total; 
 }
-
+/**
+ * @brief Sumuje produkcję w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Suma produkcji.
+ */
 double DataAnalysis::sumProdukcja(int startYear, int startMonth, int startDay, int startQuarter, int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
 
@@ -277,7 +352,19 @@ double DataAnalysis::sumProdukcja(int startYear, int startMonth, int startDay, i
     return total; 
 }
 
-// Średnia
+/**
+ * @brief Oblicza średnią autokonsumpcję w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Średnia autokonsumpcja.
+ */
 double DataAnalysis::avgAutokonsumpcja(int startYear, int startMonth, int startDay, int startQuarter,
                                       int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
@@ -309,6 +396,20 @@ double DataAnalysis::avgAutokonsumpcja(int startYear, int startMonth, int startD
     return avrege; 
 }
 
+
+/**
+ * @brief Oblicza średni eksport w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Średni eksport.
+ */
 double DataAnalysis::avgEksport(int startYear, int startMonth, int startDay, int startQuarter, int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
     int count = 0;
@@ -339,6 +440,20 @@ double DataAnalysis::avgEksport(int startYear, int startMonth, int startDay, int
     return avrege; 
 }
 
+
+/**
+ * @brief Oblicza średni import w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Średni import.
+ */
 double DataAnalysis::avgImport(int startYear, int startMonth, int startDay, int startQuarter, int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
     int count = 0;
@@ -369,6 +484,19 @@ double DataAnalysis::avgImport(int startYear, int startMonth, int startDay, int 
     return avrege; 
 }
 
+/**
+ * @brief Oblicza średni pobór w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Średni pobór.
+ */
 double DataAnalysis::avgPobor(int startYear, int startMonth, int startDay, int startQuarter, int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
     int count = 0;
@@ -399,6 +527,20 @@ double DataAnalysis::avgPobor(int startYear, int startMonth, int startDay, int s
     return avrege; 
 }
 
+
+/**
+ * @brief Oblicza średnią produkcję w podanym przedziale czasowym.
+ *
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @return double Średnia produkcja.
+ */
 double DataAnalysis::avgProdukcja(int startYear, int startMonth, int startDay, int startQuarter, int endYear, int endMonth, int endDay, int endQuarter) {
     double total = 0;
     int count = 0;
@@ -429,7 +571,26 @@ double DataAnalysis::avgProdukcja(int startYear, int startMonth, int startDay, i
     return avrege; 
 }
 
-// Porównanie dwóch przedziałów
+/**
+ * @brief Porównuje autokonsumpcję w dwóch przedziałach czasowych.
+ *
+ * @param startYear1 Rok początkowy pierwszego przedziału.
+ * @param startMonth1 Miesiąc początkowy pierwszego przedziału.
+ * @param startDay1 Dzień początkowy pierwszego przedziału.
+ * @param startQuarter1 Ćwiartka początkowa pierwszego przedziału.
+ * @param endYear1 Rok końcowy pierwszego przedziału.
+ * @param endMonth1 Miesiąc końcowy pierwszego przedziału.
+ * @param endDay1 Dzień końcowy pierwszego przedziału.
+ * @param endQuarter1 Ćwiartka końcowa pierwszego przedziału.
+ * @param startYear2 Rok początkowy drugiego przedziału.
+ * @param startMonth2 Miesiąc początkowy drugiego przedziału.
+ * @param startDay2 Dzień początkowy drugiego przedziału.
+ * @param startQuarter2 Ćwiartka początkowa drugiego przedziału.
+ * @param endYear2 Rok końcowy drugiego przedziału.
+ * @param endMonth2 Miesiąc końcowy drugiego przedziału.
+ * @param endDay2 Dzień końcowy drugiego przedziału.
+ * @param endQuarter2 Ćwiartka końcowa drugiego przedziału.
+ */
 void DataAnalysis::compareAutokonsumpcja(int startYear1, int startMonth1, int startDay1, int startQuarter1,
                                           int endYear1, int endMonth1, int endDay1, int endQuarter1,
                                           int startYear2, int startMonth2, int startDay2, int startQuarter2,
@@ -452,6 +613,26 @@ void DataAnalysis::compareAutokonsumpcja(int startYear1, int startMonth1, int st
     }
 }
 
+/**
+ * @brief Porównuje eksport w dwóch przedziałach czasowych.
+ *
+ * @param startYear1 Rok początkowy pierwszego przedziału.
+ * @param startMonth1 Miesiąc początkowy pierwszego przedziału.
+ * @param startDay1 Dzień początkowy pierwszego przedziału.
+ * @param startQuarter1 Ćwiartka początkowa pierwszego przedziału.
+ * @param endYear1 Rok końcowy pierwszego przedziału.
+ * @param endMonth1 Miesiąc końcowy pierwszego przedziału.
+ * @param endDay1 Dzień końcowy pierwszego przedziału.
+ * @param endQuarter1 Ćwiartka końcowa pierwszego przedziału.
+ * @param startYear2 Rok początkowy drugiego przedziału.
+ * @param startMonth2 Miesiąc początkowy drugiego przedziału.
+ * @param startDay2 Dzień początkowy drugiego przedziału.
+ * @param startQuarter2 Ćwiartka początkowa drugiego przedziału.
+ * @param endYear2 Rok końcowy drugiego przedziału.
+ * @param endMonth2 Miesiąc końcowy drugiego przedziału.
+ * @param endDay2 Dzień końcowy drugiego przedziału.
+ * @param endQuarter2 Ćwiartka końcowa drugiego przedziału.
+ */
 void DataAnalysis::compareEksport(int startYear1, int startMonth1, int startDay1, int startQuarter1,
                             int endYear1, int endMonth1, int endDay1, int endQuarter1,
                             int startYear2, int startMonth2, int startDay2, int startQuarter2,
@@ -475,6 +656,26 @@ void DataAnalysis::compareEksport(int startYear1, int startMonth1, int startDay1
     }
 }
 
+/**
+ * @brief Porównuje import w dwóch przedziałach czasowych.
+ *
+ * @param startYear1 Rok początkowy pierwszego przedziału.
+ * @param startMonth1 Miesiąc początkowy pierwszego przedziału.
+ * @param startDay1 Dzień początkowy pierwszego przedziału.
+ * @param startQuarter1 Ćwiartka początkowa pierwszego przedziału.
+ * @param endYear1 Rok końcowy pierwszego przedziału.
+ * @param endMonth1 Miesiąc końcowy pierwszego przedziału.
+ * @param endDay1 Dzień końcowy pierwszego przedziału.
+ * @param endQuarter1 Ćwiartka końcowa pierwszego przedziału.
+ * @param startYear2 Rok początkowy drugiego przedziału.
+ * @param startMonth2 Miesiąc początkowy drugiego przedziału.
+ * @param startDay2 Dzień początkowy drugiego przedziału.
+ * @param startQuarter2 Ćwiartka początkowa drugiego przedziału.
+ * @param endYear2 Rok końcowy drugiego przedziału.
+ * @param endMonth2 Miesiąc końcowy drugiego przedziału.
+ * @param endDay2 Dzień końcowy drugiego przedziału.
+ * @param endQuarter2 Ćwiartka końcowa drugiego przedziału.
+ */
 void DataAnalysis::compareImport(int startYear1, int startMonth1, int startDay1, int startQuarter1,
                         int endYear1, int endMonth1, int endDay1, int endQuarter1,
                         int startYear2, int startMonth2, int startDay2, int startQuarter2,
@@ -498,6 +699,26 @@ void DataAnalysis::compareImport(int startYear1, int startMonth1, int startDay1,
     }
 }
 
+/**
+ * @brief Porównuje pobór w dwóch przedziałach czasowych.
+ *
+ * @param startYear1 Rok początkowy pierwszego przedziału.
+ * @param startMonth1 Miesiąc początkowy pierwszego przedziału.
+ * @param startDay1 Dzień początkowy pierwszego przedziału.
+ * @param startQuarter1 Ćwiartka początkowa pierwszego przedziału.
+ * @param endYear1 Rok końcowy pierwszego przedziału.
+ * @param endMonth1 Miesiąc końcowy pierwszego przedziału.
+ * @param endDay1 Dzień końcowy pierwszego przedziału.
+ * @param endQuarter1 Ćwiartka końcowa pierwszego przedziału.
+ * @param startYear2 Rok początkowy drugiego przedziału.
+ * @param startMonth2 Miesiąc początkowy drugiego przedziału.
+ * @param startDay2 Dzień początkowy drugiego przedziału.
+ * @param startQuarter2 Ćwiartka początkowa drugiego przedziału.
+ * @param endYear2 Rok końcowy drugiego przedziału.
+ * @param endMonth2 Miesiąc końcowy drugiego przedziału.
+ * @param endDay2 Dzień końcowy drugiego przedziału.
+ * @param endQuarter2 Ćwiartka końcowa drugiego przedziału.
+ */
 void DataAnalysis::comparePobor(int startYear1, int startMonth1, int startDay1, int startQuarter1,
                         int endYear1, int endMonth1, int endDay1, int endQuarter1,
                         int startYear2, int startMonth2, int startDay2, int startQuarter2,
@@ -521,6 +742,26 @@ void DataAnalysis::comparePobor(int startYear1, int startMonth1, int startDay1, 
     }
 }
 
+/**
+ * @brief Porównuje produkcję w dwóch przedziałach czasowych.
+ *
+ * @param startYear1 Rok początkowy pierwszego przedziału.
+ * @param startMonth1 Miesiąc początkowy pierwszego przedziału.
+ * @param startDay1 Dzień początkowy pierwszego przedziału.
+ * @param startQuarter1 Ćwiartka początkowa pierwszego przedziału.
+ * @param endYear1 Rok końcowy pierwszego przedziału.
+ * @param endMonth1 Miesiąc końcowy pierwszego przedziału.
+ * @param endDay1 Dzień końcowy pierwszego przedziału.
+ * @param endQuarter1 Ćwiartka końcowa pierwszego przedziału.
+ * @param startYear2 Rok początkowy drugiego przedziału.
+ * @param startMonth2 Miesiąc początkowy drugiego przedziału.
+ * @param startDay2 Dzień początkowy drugiego przedziału.
+ * @param startQuarter2 Ćwiartka początkowa drugiego przedziału.
+ * @param endYear2 Rok końcowy drugiego przedziału.
+ * @param endMonth2 Miesiąc końcowy drugiego przedziału.
+ * @param endDay2 Dzień końcowy drugiego przedziału.
+ * @param endQuarter2 Ćwiartka końcowa drugiego przedziału.
+ */
 void DataAnalysis::compareProdukcja(int startYear1, int startMonth1, int startDay1, int startQuarter1,
                             int endYear1, int endMonth1, int endDay1, int endQuarter1,
                             int startYear2, int startMonth2, int startDay2, int startQuarter2,
@@ -544,7 +785,21 @@ void DataAnalysis::compareProdukcja(int startYear1, int startMonth1, int startDa
     }
 }
 
-// Wyszukiwanie danych
+/**
+ * @brief Wyszukuje rekordy importu w podanym przedziale czasowym z określoną tolerancją.
+ *
+ * @param target Wartość docelowa importu.
+ * @param tolerance Tolerancja dla wartości importu.
+ * @param startYear Rok początkowy.
+ * @param startMonth Miesiąc początkowy.
+ * @param startDay Dzień początkowy.
+ * @param startQuarter Ćwiartka początkowa.
+ * @param endYear Rok końcowy.
+ * @param endMonth Miesiąc końcowy.
+ * @param endDay Dzień końcowy.
+ * @param endQuarter Ćwiartka końcowa.
+ * @param type Typ danych do wyszukania (1 - autokonsumpcja, 2 - eksport, 3 - import, 4 - pobór, 5 - produkcja).
+ */
 void DataAnalysis::searchImport(double target, double tolerance, int startYear, int startMonth, int startDay, int startQuarter,
                                  int endYear, int endMonth, int endDay, int endQuarter, int type) {
     std::cout << "Wyszukiwanie importu z tolerancją +/- " << tolerance << std::endl;
@@ -622,6 +877,9 @@ void DataAnalysis::searchImport(double target, double tolerance, int startYear, 
     }
 }
 
+/**
+ * @brief Wypisuje podsumowanie danych.
+ */
 void DataAnalysis::printSummary() {
     int correctRecords = 0;
     int incorrectRecords = 0;
@@ -672,6 +930,11 @@ void DataAnalysis::printSummary() {
     dataLog.close();
 }
 
+/**
+ * @brief Zwraca aktualną datę i godzinę w formacie YYYY-MM-DD_HH-MM-SS.
+ *
+ * @return std::string Aktualna data i godzina.
+ */
 std::string DataAnalysis::getCurrentDateTime() {
     std::time_t now = std::time(0);
     std::tm localTime;
@@ -682,7 +945,11 @@ std::string DataAnalysis::getCurrentDateTime() {
 }
 //======================================================================================================================
 
-// Funkcja zapisująca dane do pliku binarnego
+/**
+ * @brief Zapisuje dane do pliku binarnego.
+ *
+ * @param fileName Nazwa pliku binarnego.
+ */
 void DataAnalysis::saveToBinaryFile(std::string& fileName) {
     std::ofstream outFile(fileName, std::ios::binary);
     
@@ -713,7 +980,11 @@ void DataAnalysis::saveToBinaryFile(std::string& fileName) {
     std::cout << "Dane zostały zapisane do pliku: " << fileName << std::endl;
 }
 
-// Funkcja ładująca dane z pliku binarnego
+/**
+ * @brief Ładuje dane z pliku binarnego.
+ *
+ * @param fileName Nazwa pliku binarnego.
+ */
 void DataAnalysis::loadFromBinaryFile(std::string& fileName) {
     std::ifstream inFile(fileName, std::ios::binary);
     
@@ -734,7 +1005,11 @@ void DataAnalysis::loadFromBinaryFile(std::string& fileName) {
     inFile.close();
     std::cout << "Dane zostały wczytane z pliku: " << fileName << std::endl;
 }
-
+/**
+ * @brief Dodaje rekord do odpowiedniego węzła w drzewie.
+ *
+ * @param record Wskaźnik na rekord do dodania.
+ */
 void DataAnalysis::addRecordToTree(Record* record) {
     // Parsowanie daty
     std::tm tm = record->timestamp;
