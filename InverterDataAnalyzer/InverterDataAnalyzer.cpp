@@ -4,15 +4,15 @@
 #include <iostream>
 
 void displayMenu() {
-    std::cout << "\nWybierz opcję:\n";
+    std::cout << "\nWybierz opcje:\n";
     std::cout << "1. Wczytaj plik CSV\n";
     std::cout << "2. Zapisz dane do pliku binarnego\n";
     std::cout << "3. Odczytaj dane z pliku binarnego\n";
-    std::cout << "4. Wyświetl sumy autokonsumpcji, eksportu, importu, poboru, produkcji\n";
-    std::cout << "5. Wyświetl średnie wartości autokonsumpcji, eksportu, importu, poboru, produkcji\n";
-    std::cout << "6. Porównaj wartości dla dwóch przedziałów czasowych\n";
-    std::cout << "7. Wyszukaj dane według warunków\n";
-    std::cout << "8. Zakończ program\n";
+    std::cout << "4. Wyswietl sumy autokonsumpcji, eksportu, importu, poboru, produkcji\n";
+    std::cout << "5. Wyswietl srednie wartosci autokonsumpcji, eksportu, importu, poboru, produkcji\n";
+    std::cout << "6. Porownaj wartosci dla dwoch przedzialow czasowych\n";
+    std::cout << "7. Wyszukaj dane wedlug warunkow\n";
+    std::cout << "8. Zakoncz program\n";
 }
 
 
@@ -21,7 +21,7 @@ void handleMenuSelection(int choice, DataAnalysis& analysis) {
         case 1:
             {
                 std::string fileName;
-                std::cout << "Podaj nazwę pliku CSV do wczytania: ";
+                std::cout << "Podaj nazwe pliku CSV do wczytania: ";
                 std::cin >> fileName;
                 analysis.loadDataFromCSV(fileName);
                 break;
@@ -29,7 +29,7 @@ void handleMenuSelection(int choice, DataAnalysis& analysis) {
         case 2:
             {
                 std::string fileName;
-                std::cout << "Podaj nazwę pliku binarnego do zapisania: ";
+                std::cout << "Podaj nazwe pliku binarnego do zapisania: ";
                 std::cin >> fileName;
                 analysis.saveToBinaryFile(fileName);
                 break;
@@ -193,7 +193,7 @@ void handleMenuSelection(int choice, DataAnalysis& analysis) {
 
                 double target, tolerance;
 
-                std::cout << "Podaj wartości dla funkcji searchImport:" << std::endl;
+                std::cout << "Podaj wartosci dla funkcji searchImport:" << std::endl;
                 std::cout << "Target: ";
                 std::cin >> target;
                 std::cout << "Tolerance: ";
@@ -211,10 +211,10 @@ void handleMenuSelection(int choice, DataAnalysis& analysis) {
                 break;
             }
         case 8:
-            std::cout << "Zakończenie programu...\n";
+            std::cout << "Zakonczenie programu...\n";
             break;
         default:
-            std::cout << "Nieprawidłowy wybór, spróbuj ponownie.\n";
+            std::cout << "Nieprawidlowy wybor, sprobuj ponownie.\n";
             break;
     }
 }
@@ -223,21 +223,14 @@ int main(int argc, char* argv[])
 {
     DataAnalysis analysis;
 
-    int choice;
+    int choice = 0;
     bool running = true;
 
     while (running) {
         displayMenu();
-        std::cout << "Wybierz opcję (1-8): ";
-        
-        // Sprawdzamy, czy użytkownik wprowadził poprawny numer
-        if (!(std::cin >> choice)) {
-            std::cin.clear();  // Wyczyść błąd strumienia
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');  // Ignoruj błędne dane
-            std::cout << "Proszę podać liczbę od 1 do 8.\n";
-            continue;
-        }
-        
+        std::cout << "Wybierz opcje (1-8): ";
+        std::cin >> choice;
+
         if (choice == 8) {
             running = false;
         }

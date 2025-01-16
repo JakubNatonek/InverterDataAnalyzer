@@ -13,6 +13,7 @@ Record::Record(const std::string& timestamp, double auto_consumption, double pow
     std::istringstream ss(timestamp);
     ss >> std::get_time(&this->timestamp, "%d.%m.%Y %H:%M");
     if (ss.fail()) {
+        std::cout << "Cos sie zjebalo " << std::endl;
         throw std::invalid_argument("Invalid timestamp format");
     }
     this->auto_consumption = auto_consumption;

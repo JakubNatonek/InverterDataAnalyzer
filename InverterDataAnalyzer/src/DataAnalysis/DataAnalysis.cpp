@@ -8,20 +8,90 @@
 
 void DataAnalysis::loadDataFromCSV(const std::string& filename) {
     std::ifstream file(filename);
-    std::string line;
+    std::cout << filename << "\n";
+    if (!file.is_open()) {
+        std::cerr << "Nie udalo sie otworzyc pliku CSV: " << filename << "\n";
+        return;
+    }
 
-    while (getline(file, line)) {
+    std::string line;
+    std::getline(file, line);
+
+    int correctRecords = 0;
+    int incorrectRecords = 0;
+
+    // Otwórz plik logowy do zapisywania niepoprawnych rekordów
+    std::ofstream logData("log_data_" + getCurrentDateTime() + ".txt");
+    std::ofstream logError("log_error_" + getCurrentDateTime() + ".txt");
+
+
+    while (std::getline(file, line)) {
         if (line.empty() || line[0] == '#') continue; // Pomijamy puste i komentarze
 
         std::istringstream stream(line);
-        std::string timestamp;
-        double auto_consumption, power_export, power_import, power_consumption, power_production;
 
-        stream >> timestamp >> auto_consumption >> power_export >> power_import >> power_consumption >> power_production;
+        std::string timestamp, auto_consumption_str, power_export_str, power_import_str, power_consumption_str, power_production_str;
+        double auto_consumption = 0, power_export = 0, power_import = 0, power_consumption = 0, power_production = 0;
+
+        std::getline(stream, timestamp, ',');
+        std::getline(stream, auto_consumption_str, ',');
+        std::getline(stream, power_export_str, ',');
+        std::getline(stream, power_import_str, ',');
+        std::getline(stream, power_consumption_str, ',');
+        std::getline(stream, power_production_str);
+
+        std::cout << "Timestamp: " << timestamp << "\n";
+        std::cout << "Auto Consumption: " << auto_consumption_str << "\n";
+        std::cout << "Power Export: " << power_export_str << "\n";
+        std::cout << "Power Import: " << power_import_str << "\n";
+        std::cout << "Power Consumption: " << power_consumption_str << "\n";
+        std::cout << "Power Production: " << power_production_str << "\n";
+        std::cout << "----------------------------------------" <<"\n";
+        
+        // Konwersja stringów na liczby
+        try {
+            auto_consumption = std::stod(auto_consumption_str);
+            power_export = std::stod(power_export_str);
+            power_import = std::stod(power_import_str);
+            power_consumption = std::stod(power_consumption_str);
+            power_production = std::stod(power_production_str);
+        } catch (const std::invalid_argument& e) {
+            std::cerr << "Błąd konwersji wartości w linii: " << line << "\n";
+            logError << "Błąd konwersji: " << line << std::endl;
+            incorrectRecords++;
+            continue;  // Pomijamy ten rekord
+        }
+
+        std::cout << "Timestamp: " << timestamp << std::endl;
+        std::cout << "Auto Consumption: " << auto_consumption << std::endl;
+        // std::cout << "Power Export: " << power_export << std::endl;
+        // std::cout << "Power Import: " << power_import << std::endl;
+        // std::cout << "Power Consumption: " << power_consumption << std::endl;
+        // std::cout << "Power Production: " << power_production << std::endl;
+        // std::cout << "----------------------------------------" << std::endl;
+        
+
+        
+
+        // stream >> timestamp >> auto_consumption >> power_export >> power_import >> power_consumption >> power_production;
+        
+
         
         // Utwórz rekord
         Record* record = new Record(timestamp, auto_consumption, power_export, power_import, power_consumption, power_production);
-
+        record->show();
+       
+        if (record->isValid()) {
+            // Jeżeli rekord jest poprawny, dodajemy go do drzewa
+            addRecordToTree(record);
+            logData << line << std::endl;  // Zapisujemy poprawny rekord do logu
+            correctRecords++;
+        } else {
+            // Jeżeli rekord jest niepoprawny, zapisujemy go do logu błędów
+            logError << line << std::endl;
+            incorrectRecords++;
+        }
+        
         // Parsowanie daty
         std::tm tm = record->timestamp;
         int year = tm.tm_year + 1900;
@@ -38,6 +108,10 @@ void DataAnalysis::loadDataFromCSV(const std::string& filename) {
         }
         data[year][month][day][quarter]->addRecord(record);
     }
+    
+    file.close();
+    logData.close();
+    logError.close();
 }
 
 //======================================================================================================================
