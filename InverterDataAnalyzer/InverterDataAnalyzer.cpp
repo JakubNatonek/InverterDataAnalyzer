@@ -195,11 +195,12 @@ void handleMenuSelection(int choice, DataAnalysis& analysis) {
         std::cout << "3. importu" << std::endl;
         std::cout << "4. poboru" << std::endl;
         std::cout << "5. produkcji" << std::endl;
+        std::cout << "Podaj wartosci dla funkcji searchImport:" << std::endl;
         std::cin >> helper;
 
         double target, tolerance;
 
-        std::cout << "Podaj wartosci dla funkcji searchImport:" << std::endl;
+
         std::cout << "Target: ";
         std::cin >> target;
         std::cout << "Tolerance: ";
