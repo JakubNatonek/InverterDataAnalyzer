@@ -952,7 +952,7 @@ std::string DataAnalysis::getCurrentDateTime() {
  */
 void DataAnalysis::saveToBinaryFile(std::string& fileName) {
     std::ofstream outFile(fileName, std::ios::binary);
-    
+
     if (!outFile) {
         std::cerr << "Błąd otwarcia pliku do zapisu.\n";
         return;
@@ -968,7 +968,7 @@ void DataAnalysis::saveToBinaryFile(std::string& fileName) {
                         auto records = node->getRecords();
                         for (auto& record : records) {
                             // Zapisujemy każdy rekord do pliku
-                            outFile.write(reinterpret_cast<const char*>(&record), sizeof(Record));
+                            outFile.write(reinterpret_cast<const char*>(record), sizeof(Record));
                         }
                     }
                 }
