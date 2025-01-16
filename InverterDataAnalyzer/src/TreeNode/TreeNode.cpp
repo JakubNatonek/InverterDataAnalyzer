@@ -20,7 +20,7 @@ TreeNode::TreeNode(int year, int month, int day, int quarter) {
     this->month = month;
     this->day = day;
     this->quarter = quarter;
-    show();
+
 }
 
 
