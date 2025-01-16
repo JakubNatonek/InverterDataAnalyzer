@@ -1,4 +1,5 @@
-#include "src/Record.h"
+#include "src/Record/Record.h"
+#include "src/TreeNode/TreeNode.h"
 #include <iostream>
 
 int main(int argc, char* argv[])
